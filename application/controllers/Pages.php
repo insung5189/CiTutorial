@@ -7,7 +7,15 @@ class Pages extends CI_Controller {
                 phpinfo();
         }
 
-        $data['title'] = ucfirst($page); // Capitalize the first letter
+        // $data['title'] = ucfirst($page); // Capitalize the first letter
+
+        $array = array();
+        $data = [
+                "title" => "Home",
+                "test" => "test"
+        ];
+
+        // echo $array['title'];
 
         $this->load->view('templates/header', $data);
         $this->load->view('pages/'.$page, $data);
