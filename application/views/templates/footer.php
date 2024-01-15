@@ -1,3 +1,5 @@
-<em>&copy; 2014</em>
+<!-- footer.php -->
+<br>
+<em>&copy; 2024</em>
         </body>
 </html>

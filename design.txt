@@ -1,0 +1,18 @@
+CI의 주소(Routing) 형태
+http://example.com/(index.php)/컨트롤러클래스1/컨트롤러클래스2/컨트롤러메서드/인수
+
+만들어야 하는것..
+aritcle을 제어하는 컨트롤러
+[C]
+articleWrite를 보여주는 함수(GET)
+articleWrite를 실행해주는 함수(POST)
+[R]
+articleList를 보여주는 함수(GET)
+articleDetail을 보여주는 함수(GET)
+[U]
+articleEdit를 보여주는 함수(GET)
+articleEdite를 실행시켜주는 함수(POST)
+[D]
+articleDelete를 실행시켜주는 함수(GET)
+
+※ 하나의 클래스엔 하나의 컨트롤러만 배치시킨다.
