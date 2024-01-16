@@ -70,22 +70,22 @@ class ArticleController extends CI_Controller {
             if ($insertedId) {
                 echo "
                     <script>
+                        alert('게시물이 정상적으로 등록되었습니다.');
                         location.href='/article/articleController/articleDetail/$insertedId';
                     </script>
                 ";
             } else { // 오류 발생 시 게시글 리스트로 이동
                 echo "
-                <script>
-                    alert('등록중 오류가 발생했습니다. 게시물 리스트 페이지로 이동합니다.');
-                    location.href='/article/articleController/articleList';
-                </script>
+                    <script>
+                        alert('등록중 오류가 발생했습니다.\n게시물 리스트 페이지로 이동합니다.');
+                        location.href='/article/articleController/articleList';
+                    </script>
             ";
             }
     }
 
     public function articleEdit($articleId) {
         // Article 수정 폼을 보여주는 코드 (GET)
-
         $this->load->model('articlemodel'); 
         $data['article'] = $this->articlemodel->getArticle($articleId);  // 모델의 메서드 호출
 
@@ -93,21 +93,6 @@ class ArticleController extends CI_Controller {
         $this->load->view('article/article_edit', $data);
         $this->load->view('templates/footer', $data);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function processArticleEdit($articleId) {
         // Article 수정을 처리하는 코드 (POST)
@@ -123,21 +108,42 @@ class ArticleController extends CI_Controller {
         if ($articleId) {
             echo "
                 <script>
-                alert('게시물이 정상적으로 수정되었습니다.');
+                    alert('게시물이 정상적으로 수정되었습니다.');
                     location.href='/article/articleController/articleDetail/$articleId';
                 </script>
             ";
         } else { // 오류 발생 시 게시글 리스트로 이동
             echo "
-            <script>
-                alert('등록중 오류가 발생했습니다. 게시물 리스트 페이지로 이동합니다.');
-                location.href='/article/articleController/articleList';
-            </script>
+                <script>
+                    alert('게시글 수정 중 오류가 발생했습니다.\n게시물 리스트 페이지로 이동합니다.');
+                    location.href='/article/articleController/articleList';
+                </script>
         ";
         }
     }
 
     public function processArticleDelete($articleId) {
         // Article 삭제를 처리하는 코드 (GET)
+        $this->load->model('articlemodel');
+        $this->articlemodel->deleteArticle($articleId);
+
+        $isPresent = $this->articlemodel->getArticle($articleId);
+
+        // 글 수정 후에는 해당 게시글 상세보기 페이지로 이동
+        if (!$isPresent) {
+            echo "
+                <script>
+                    alert('게시물이 정상적으로 삭제되었습니다.');
+                    location.href='/article/articleController/articleList';
+                </script>
+            ";
+        } else { // 오류 발생 시 게시글 리스트로 이동
+            echo "
+                <script>
+                    alert('게시글 삭제 중 오류가 발생했습니다.\n게시물 리스트 페이지로 이동합니다.');
+                    location.href='/article/articleController/articleList';
+                </script>
+        ";
+        }
     }
 }

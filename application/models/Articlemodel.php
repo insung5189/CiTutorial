@@ -7,19 +7,26 @@ class Articlemodel extends CI_Model {
     }
 
     public function testDatabaseConnection() {
-        $conn = $this->db->conn_id;
-        if ($conn->ping()) {
-            echo "
-                <script>
-                    alert('Database connection is successful!');
-                </script>
-            ";
-        } else {
-            echo "
-                <script>
-                    alert('Database connection failed!');
-                </script>
-            ";
+        try {
+            $conn = $this->db->conn_id;
+            if ($conn->ping()) {
+                echo "
+                    <script>
+                        alert('DB연결 성공!');
+                    </script>
+                ";
+                return true;  // DB 연결 성공
+            } else {
+                echo "
+                    <script>
+                        alert('DB연결 실패!');
+                    </script>
+                ";
+                throw new Exception("DB 연결 실패");
+            }
+        } catch (Exception $e){
+            log_message('error', $e->getMessage());
+            return false; // DB 연결 실패
         }
     }
 
@@ -27,9 +34,10 @@ class Articlemodel extends CI_Model {
 
     }
 
-    public function getArticleList () {
+    public function getArticleList() {
+        $this->db->order_by('id', 'DESC'); // order_by는 쿼리빌더 클래스에 속해있기 때문에 3.xx버전에서는 쿼리빌더 클래스를 이용해서 작성해야 함.
         $query = $this->db->get('article');
-        return $query->result(); // 쿼리의 결과를 result로 담음
+        return $query->result();
     }
     
     public function getArticle ($articleId) {
@@ -67,5 +75,10 @@ class Articlemodel extends CI_Model {
 
             // 삽입된 행의 ID 값을 반환
             return $this->db->insert_id();
+    }
+
+    public function deleteArticle($articleId) {
+        $this->db->where('id', $articleId);
+        $this->db->delete('article');
     }
 }
